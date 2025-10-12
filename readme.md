@@ -24,7 +24,7 @@ npm i @googlemaps/js-api-loader @types/google.maps
 
 ## GMAPS API KEY
 
-Create `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps-key`
+Create an `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps-key`
 
 See the example code: [src/main.ts](src/main.ts)
 
