@@ -43,7 +43,7 @@ Use the left handed coordinate system for your scene and apply the `fixMesh` fun
 
 ## License
 
-MIT
+Apache License 2.0.
 
 ## Credits
 
