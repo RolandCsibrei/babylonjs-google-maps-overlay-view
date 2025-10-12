@@ -22,7 +22,7 @@ npm i @googlemaps/js-api-loader @types/google.maps
 2. Install dependencies: `npm install`
 3. Run the demo or tests as needed `npm run dev
 
-## GMPS API KEY
+## GMAPS API KEY
 
 Create `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps-key`
 
