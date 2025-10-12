@@ -1,5 +1,5 @@
 import type { APIOptions } from "@googlemaps/js-api-loader";
-import { initMap, reverseMeshIndices } from "./overlay/util";
+import { initMap, fixMesh } from "./overlay/util";
 import { BabylonJSWebGLOverlayView } from "./overlay/BabylonJSWebGLOverlayView";
 import {
   Color3,
@@ -38,7 +38,7 @@ async function start() {
     },
     scene
   );
-  reverseMeshIndices(sphere);
+  fixMesh(sphere);
 
   const material = new StandardMaterial("sphere", scene);
   material.emissiveColor = Color3.Red();
@@ -48,7 +48,7 @@ async function start() {
   const box = CreateBox("box", { size: 400 }, scene);
   box.position.y = 500;
   box.position.z = 250;
-  reverseMeshIndices(box);
+  fixMesh(box);
 
   // animate the sphere
   let i = 0;

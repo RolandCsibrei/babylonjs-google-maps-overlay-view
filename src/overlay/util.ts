@@ -2,7 +2,7 @@ import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { Mesh } from "@babylonjs/core/Meshes/mesh";
 import { Tools } from "@babylonjs/core/Misc/tools";
 import { Scene } from "@babylonjs/core/scene";
-import type { IndicesArray, Nullable } from "@babylonjs/core";
+import { VertexData, type IndicesArray, type Nullable } from "@babylonjs/core";
 
 export type LatLngTypes =
   | google.maps.LatLngLiteral
@@ -161,11 +161,22 @@ export function getReversedIndices(mesh: Mesh): Nullable<IndicesArray> {
  * Reverses the winding order of triangles in a Babylon.js mesh by modifying its indices.
  * @param {Mesh} mesh - The mesh whose indices will be reversed.
  */
-export function reverseMeshIndices(mesh: Mesh) {
+export function fixMesh(mesh: Mesh) {
   const indices = getReversedIndices(mesh);
-  if (indices) {
-    mesh.setIndices(indices);
+  const positions = mesh.getPositionData();
+  if (!indices || !positions) {
+    return;
   }
+
+  const normals: number[] = [];
+  VertexData.ComputeNormals(positions, indices, normals);
+
+  const vertexData = new VertexData();
+  vertexData.positions = positions;
+  vertexData.indices = indices;
+  vertexData.normals = normals;
+
+  vertexData.applyToMesh(mesh);
 }
 
 /**
