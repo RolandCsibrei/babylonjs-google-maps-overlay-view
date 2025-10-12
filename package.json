@@ -1,0 +1,20 @@
+{
+  "name": "babylonjs-googlemaps-overlayview",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^8.31.0",
+    "@googlemaps/js-api-loader": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/google.maps": "^3.58.1",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.7"
+  }
+}
