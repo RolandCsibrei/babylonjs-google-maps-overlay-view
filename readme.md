@@ -39,7 +39,7 @@ The Google Maps Overlay View WebGL implementation uses the right handed coordina
 
 #### Temporary solution
 
-Use the left handed coordinate system for your scene and apply the `fixMesh` method to your meshes. This converts the mesh as if it was created with the right handed coordinate system.
+Use the left handed coordinate system for your scene and apply the `fixMesh` function to your meshes. This converts the mesh as if it was created with the right handed coordinate system.
 
 ## License
 
