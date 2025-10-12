@@ -16,17 +16,17 @@ Copy the `src/overlay` directory to your project.
 npm i @googlemaps/js-api-loader @types/google.maps
 ```
 
-## Usage
-
-Create `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps-key`
-
-See the example code: [src/main.ts](src/main.ts)
-
 ## Development and demo
 
 1. Clone the repo
 2. Install dependencies: `npm install`
-3. Run the demo or tests as needed `npm run dev`
+3. Run the demo or tests as needed `npm run dev
+
+## GMPS API KEY
+
+Create `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps-key`
+
+See the example code: [src/main.ts](src/main.ts)
 
 ### Issues
 
