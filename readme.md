@@ -10,8 +10,10 @@ A library for integrating [babylon.js](https://www.babylonjs.com/) 3D rendering 
 
 ## Installation
 
+Copy the `src/overlay` directory to your project.
+
 ```bash
-npm install babylonjs-google-maps-overlay-view
+npm i @googlemaps/js-api-loader @types/google.maps
 ```
 
 ## Usage
@@ -30,6 +32,14 @@ See [src/main.ts](src/main.ts)
 1. Clone the repo
 2. Install dependencies: `npm install`
 3. Run the demo or tests as needed `npm run dev`
+
+### Issues
+
+The Google Maps Overlay View WebGL implementation uses the right handed coordinate system. When setting the babylon.js scene to use the right handed system the roads disappear on the map.
+
+#### Temporary solution
+
+Use the left handed coordinate system for your scene and apply the `fixMesh` method to your meshes. This converts the mesh as if it was created with the right handed coordinate system.
 
 ## License
 
