@@ -8,7 +8,7 @@ A library for integrating [babylon.js](https://www.babylonjs.com/) 3D rendering 
 - Synchronize 3D objects with map movements and zoom
 - Easy integration with existing Google Maps projects
 
-## Installation
+## Installation - only if you going to use in your own project
 
 Copy the `src/overlay` directory to your project.
 
@@ -22,12 +22,7 @@ Create `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps
 
 See the example code: [src/main.ts](src/main.ts)
 
-## Requirements
-
-- [babylon.js](https://www.npmjs.com/package/babylonjs)
-- [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/overview)
-
-## Development
+## Development and demo
 
 1. Clone the repo
 2. Install dependencies: `npm install`
