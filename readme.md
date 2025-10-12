@@ -8,7 +8,7 @@ A library for integrating [babylon.js](https://www.babylonjs.com/) 3D rendering 
 - Synchronize 3D objects with map movements and zoom
 - Easy integration with existing Google Maps projects
 
-## Installation - only if you going to use in your own project
+## Installation - only if you are going to use this in your own project
 
 Copy the `src/overlay` directory to your project.
 
