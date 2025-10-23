@@ -1,6 +1,6 @@
 import type { APIOptions } from "@googlemaps/js-api-loader";
 import { initMap, fixMesh } from "../../google-maps/util";
-import { BabylonJSWebGLOverlayView } from "../../google-maps/BabylonJSWebGLOverlayView";
+import { BabylonJSWebGLOverlayView } from "../../google-maps/GoogleMapsWebGLOverlayView";
 import {
   Color3,
   CreateBox,
@@ -19,11 +19,17 @@ async function start() {
     mapId: "8f90a5c9a08ff797",
   };
 
+  const anchor = mapOptions.center!;
+
   const map = await initMap(apiOptions, mapOptions);
 
   const overlay = new BabylonJSWebGLOverlayView({
     map,
-    anchor: mapOptions.center!,
+    anchor,
+    antialias: true,
+    adaptToDeviceRatio: true,
+    addDefaultLighting: true,
+    upAxis: "Z",
   });
 
   await overlay.waitForSceneInit();

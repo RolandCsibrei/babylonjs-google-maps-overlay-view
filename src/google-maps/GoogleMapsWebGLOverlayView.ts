@@ -38,7 +38,7 @@ export interface RaycastOptions {
   updateMatrix?: boolean;
 }
 
-export interface BabylonJSWebGLOverlayViewOptions {
+export interface GoogleMapsWebGLOverlayViewOptions {
   /**
    * The anchor for the scene.
    *
@@ -144,7 +144,7 @@ export class BabylonJSWebGLOverlayView implements google.maps.WebGLOverlayView {
   }
 
   constructor(
-    protected readonly options: BabylonJSWebGLOverlayViewOptions = {}
+    protected readonly options: GoogleMapsWebGLOverlayViewOptions = {}
   ) {
     const {
       anchor = { lat: 0, lng: 0, altitude: 0 },

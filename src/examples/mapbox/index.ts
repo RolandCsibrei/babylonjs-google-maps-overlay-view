@@ -2,7 +2,7 @@ import "./style.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl, { type MapOptions } from "mapbox-gl";
 
-import { BabylonJSMapBoxWebGLCustomLayer } from "../../mapbox/BabylonJSMapBoxWebGLCustomLayer";
+import { MapBoxWebGLCustomLayer } from "../../mapbox/MapBoxWebGLCustomLayer";
 import { CreateSphere } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -37,8 +37,8 @@ async function start() {
     lng: 148.9819,
   };
 
-  const overlay = new BabylonJSMapBoxWebGLCustomLayer({
-    map: map,
+  const overlay = new MapBoxWebGLCustomLayer({
+    map,
     anchor,
     antialias: true,
     adaptToDeviceRatio: true,

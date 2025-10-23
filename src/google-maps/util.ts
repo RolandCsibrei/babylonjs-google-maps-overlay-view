@@ -18,7 +18,7 @@ import {
   type APIOptions,
   setOptions,
 } from "@googlemaps/js-api-loader";
-import { BabylonJSWebGLOverlayView } from "./BabylonJSWebGLOverlayView";
+import { BabylonJSWebGLOverlayView } from "./GoogleMapsWebGLOverlayView";
 
 export const EARTH_RADIUS = 6371010.0;
 export const WORLD_SIZE = Math.PI * EARTH_RADIUS;

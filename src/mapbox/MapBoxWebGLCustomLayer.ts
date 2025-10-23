@@ -21,7 +21,7 @@ export interface LngLatLike {
 }
 
 // configuration of the custom layer for a 3D model per the CustomLayerInterface
-interface IBabylonJSMapBoxWebGLCustomLayer {
+interface IMapBoxWebGLCustomLayer {
   map: Map;
 
   /**
@@ -70,7 +70,7 @@ interface IBabylonJSMapBoxWebGLCustomLayer {
   antialias?: boolean;
 }
 
-export class BabylonJSMapBoxWebGLCustomLayer {
+export class MapBoxWebGLCustomLayer {
   protected readonly rotationArray: Float32Array = new Float32Array(3);
   public readonly rotationInverse: Quaternion = new Quaternion();
 
@@ -104,7 +104,7 @@ export class BabylonJSMapBoxWebGLCustomLayer {
     return this._camera;
   }
 
-  constructor(protected readonly options: IBabylonJSMapBoxWebGLCustomLayer) {
+  constructor(protected readonly options: IMapBoxWebGLCustomLayer) {
     const {
       anchor = { lat: 0, lng: 0, altitude: 0 },
       upAxis = "Y",
