@@ -1,6 +1,6 @@
 import type { APIOptions } from "@googlemaps/js-api-loader";
-import { initMap, fixMesh } from "./overlay/util";
-import { BabylonJSWebGLOverlayView } from "./overlay/BabylonJSWebGLOverlayView";
+import { initMap, fixMesh } from "../../google-maps/util";
+import { BabylonJSWebGLOverlayView } from "../../google-maps/BabylonJSWebGLOverlayView";
 import {
   Color3,
   CreateBox,
@@ -16,7 +16,7 @@ async function start() {
   const mapOptions: google.maps.MapOptions = {
     zoom: 14,
     center: { lat: 35.6594945, lng: 139.6999859 },
-    mapId: "15431d2b469f209e",
+    mapId: "8f90a5c9a08ff797",
   };
 
   const map = await initMap(apiOptions, mapOptions);
@@ -34,7 +34,7 @@ async function start() {
   const sphere = CreateSphere(
     "sphere",
     {
-      diameter: 200,
+      diameter: 20,
     },
     scene
   );
@@ -45,9 +45,9 @@ async function start() {
   sphere.material = material;
 
   // create a box
-  const box = CreateBox("box", { size: 400 }, scene);
+  const box = CreateBox("box", { size: 40 }, scene);
   box.position.y = 500;
-  box.position.z = 250;
+  box.position.z = 20;
   fixMesh(box);
 
   // animate the sphere
