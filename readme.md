@@ -1,32 +1,41 @@
-# babylon.js Google Maps Overlay View
+# babylon.js Maps Overlay GL
 
-A library for integrating [babylon.js](https://www.babylonjs.com/) 3D rendering with [Google Maps OverlayView](https://developers.google.com/maps/documentation/javascript/reference/overlay-view), enabling seamless 3D overlays on Google Maps.
+Render babylon.js scenes directly into the GL context of the map!
+
+Currently supports Google Maps and Mapbox.
 
 ## Features
 
-- Render babylon.js scenes as overlays on Google Maps
+- Render babylon.js scenes into the GL context of the map
 - Synchronize 3D objects with map movements and zoom
-- Easy integration with existing Google Maps projects
 
 ## Installation - only if you are going to use this in your own project
 
-Copy the `src/overlay` directory to your project.
+Copy the `src/google-maps` or `src/mapbox` directory to your project.
+
+Google maps dependencies:
 
 ```bash
 npm i @googlemaps/js-api-loader @types/google.maps
+```
+
+Mapbox dependecies:
+
+```bash
+npm i mapbox-gl
 ```
 
 ## Development and demo
 
 1. Clone the repo
 2. Install dependencies: `npm install`
-3. Run the demo or tests as needed `npm run dev
+3. Run the examples page `npm run dev`
 
 ## GMAPS API KEY
 
-Create an `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps-key`
+Create an `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps-key` and/or `VITE_MAPBOX_TOKEN=mapbox-token`.
 
-See the example code: [src/main.ts](src/main.ts)
+See the example code: [src/main.ts](src/examples)
 
 ### Issues
 
@@ -45,3 +54,11 @@ Apache License 2.0.
 - [babylon.js](https://www.babylonjs.com/)
 - [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/overview)
 - Inspired by Google examples
+
+## Thanks to
+
+[tibotiber](https://github.com/tibotiber) for the idea to implement Mapbox and for providing a sample project!
+
+## Link to babylon.js forum
+
+<https://forum.babylonjs.com/t/babylon-js-meets-google-maps-new-mapbox-support/60923>
