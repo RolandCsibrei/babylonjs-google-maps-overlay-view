@@ -1,7 +1,6 @@
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { Mesh } from "@babylonjs/core/Meshes/mesh";
 import { Tools } from "@babylonjs/core/Misc/tools";
-import { Scene } from "@babylonjs/core/scene";
 import { VertexData, type IndicesArray, type Nullable } from "@babylonjs/core";
 
 export type LatLngTypes =
@@ -10,7 +9,6 @@ export type LatLngTypes =
   | google.maps.LatLngAltitudeLiteral
   | google.maps.LatLngAltitude;
 
-// shorthands for math-functions, makes equations more readable
 const { atan, cos, exp, log, tan, PI } = Math;
 
 import {
@@ -37,7 +35,7 @@ export async function initMap(
 ): Promise<google.maps.Map | undefined> {
   const mapDiv = document.getElementById(htlmDivElement) as HTMLDivElement;
   if (!mapDiv) {
-    return;
+    throw new Error(`Div element with id '${htlmDivElement}' not found.`);
   }
 
   setOptions(apiOptions);
@@ -125,13 +123,12 @@ export function xyToLatLng(x: number, y: number): google.maps.LatLngLiteral {
 
 /**
  * Sets the mouse cursor style on the Google Map.
- * When a building is picked, cursor is set to pointer; otherwise, default.
  * @param {google.maps.Map} map - The Google Map instance.
- * @param {boolean} [isBuildingPicked=false] - Whether a building is currently picked.
+ * @param {string} pointer - The CSS cursor style to set, or null to reset.
  */
-export function setCursor(map: google.maps.Map, isBuildingPicked = false) {
+export function setCursor(map: google.maps.Map, pointer: string | null) {
   map.setOptions({
-    draggableCursor: isBuildingPicked ? "pointer" : null,
+    draggableCursor: pointer,
   });
 }
 
@@ -141,7 +138,7 @@ export function setCursor(map: google.maps.Map, isBuildingPicked = false) {
  * @param {Mesh} mesh - The Babylon.js mesh whose indices will be reversed.
  * @returns {Nullable<IndicesArray>} The reversed indices array or undefined if no indices.
  */
-export function getReversedIndices(mesh: Mesh): Nullable<IndicesArray> {
+function getReversedIndices(mesh: Mesh): Nullable<IndicesArray> {
   const indices = mesh.getIndices(false, true);
 
   if (indices) {
@@ -180,58 +177,6 @@ export function fixMesh(mesh: Mesh) {
 }
 
 /**
- * Sets the visibility of the Google Map by changing the display style of its container.
- * @param {google.maps.Map} map - The Google Map instance.
- * @param {boolean} visible - Whether the map should be visible.
- */
-export function setMapVisibility(map: google.maps.Map, visible: boolean) {
-  const div = map.getDiv();
-  div.style.display = visible ? "absolute" : "none";
-}
-
-/**
- * Sets the opacity of the Google Map container element.
- * @param {google.maps.Map} map - The Google Map instance.
- * @param {number | string} opacity - The opacity value (0 to 1 or CSS string).
- */
-export function setMapOpacity(map: google.maps.Map, opacity: number | string) {
-  const div = map.getDiv();
-  div.style.opacity = `${opacity}`;
-}
-
-/**
- * Sets the opacity of a given HTMLDivElement.
- * @param {HTMLDivElement} div - The div element.
- * @param {number | string} opacity - The opacity value (0 to 1 or CSS string).
- */
-export function setMapDivOpacity(
-  div: HTMLDivElement,
-  opacity: number | string
-) {
-  div.style.opacity = `${opacity}`;
-}
-
-/**
- * Performs a fade-out animation on the Google Map by gradually decreasing its opacity.
- * Once fully faded out, destroys the map instance and removes its DOM element.
- * @param {google.maps.Map} map - The Google Map instance to fade out and destroy.
- */
-export function fadeOutMap(map: google.maps.Map) {
-  const div = map.getDiv();
-  let opacity = parseFloat(div.style.opacity || "1");
-  const doFade = () => {
-    div.style.opacity = `${opacity}`;
-    opacity -= 0.01;
-    if (opacity > 0) {
-      requestAnimationFrame(doFade);
-    } else {
-      destroyMap(map);
-    }
-  };
-  requestAnimationFrame(doFade);
-}
-
-/**
  * Destroys the Google Map instance by clearing event listeners and removing its container from the DOM.
  * @param {google.maps.Map} map - The Google Map instance to destroy.
  */
@@ -240,43 +185,6 @@ export function destroyMap(map: google.maps.Map) {
   google.maps.event.clearInstanceListeners(map); // Remove all event listeners
   (map as unknown) = null; // Nullify the map reference
   div.remove();
-}
-
-/**
- * Creates and fades in a default skybox in the given Babylon.js scene using the environment texture.
- * The skybox fades in by gradually increasing its material alpha.
- * @param {Scene} scene - The Babylon.js scene instance.
- * @returns {Nullable<Mesh>} skybox - The skybox mesh
- */
-export function fadeInSkyBox(scene: Scene) {
-  if (!scene.environmentTexture) {
-    return;
-  }
-  const skybox = scene.createDefaultSkybox(
-    scene.environmentTexture,
-    true,
-    3000,
-    0.38,
-    true
-  );
-
-  const material = skybox?.material;
-  if (!material) {
-    return;
-  }
-
-  let alpha = 0;
-
-  const doFade = () => {
-    material.alpha = alpha;
-    alpha += 0.01;
-    if (alpha > 1) {
-      scene.onBeforeRenderObservable.removeCallback(doFade);
-    }
-  };
-  scene.onBeforeRenderObservable.add(doFade);
-
-  return skybox;
 }
 
 /**

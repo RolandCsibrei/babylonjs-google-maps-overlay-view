@@ -1,14 +1,14 @@
 import "./style.css";
 import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl, { type MapOptions } from "mapbox-gl";
+import { type MapOptions } from "mapbox-gl";
 
 import { MapboxWebGLCustomLayer } from "../../mapbox/MapboxWebGLCustomLayer";
 import { CreateSphere } from "@babylonjs/core/Meshes/Builders/sphereBuilder";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { Color3 } from "@babylonjs/core/Maths/math.color";
-import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
-import { initMap } from "../../mapbox/util";
+import { CreateCylinder } from "@babylonjs/core";
+import { initMap, latLngToVector3Relative } from "../../mapbox/util";
 
 async function start() {
   const apiOptions = {
@@ -17,24 +17,23 @@ async function start() {
 
   const mapOptions: MapOptions = {
     container: "map",
-    // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
     style: "mapbox://styles/mapbox/standard",
     config: {
       basemap: {
         theme: "monochrome",
       },
     },
-    zoom: 18,
-    center: [148.9819, -35.3981],
+    zoom: 15,
+    center: [31.12054933420165, 29.9759456565051],
     pitch: 60,
-    antialias: true, // create the gl context with MSAA antialiasing, so custom layers are antialiased
+    antialias: true,
   };
 
   const map = await initMap(apiOptions, mapOptions, "map");
 
   const anchor = {
-    lat: -35.39847,
-    lng: 148.9819,
+    lng: 31.12054933420165,
+    lat: 29.97597456565051,
   };
 
   const overlay = new MapboxWebGLCustomLayer({
@@ -47,31 +46,37 @@ async function start() {
   });
 
   await overlay.waitForSceneInit();
-
   const scene = overlay.scene;
 
-  const sphere = CreateSphere("sphere", { diameter: 10 }, scene);
+  const pyramidPosition = latLngToVector3Relative(
+    { lng: 31.13084933520165, lat: 29.97597456565051, altitude: 0 },
+    { ...anchor, altitude: 0 }
+  );
+
+  const pyramid = CreateCylinder(
+    "pyramid",
+    {
+      diameterTop: 0,
+      diameterBottom: 215.5,
+      height: 143.5,
+      tessellation: 4,
+    },
+    scene
+  );
+  pyramid.position = pyramidPosition;
+  pyramid.position.y += 143.5 / 2;
+  pyramid.rotation = new Vector3(0, Math.PI / 4, 0);
+
+  const pyramidMaterial = new StandardMaterial("pyramid-material", scene);
+  pyramidMaterial.diffuseColor = new Color3(0, 1, 0);
+  pyramidMaterial.alpha = 0.5;
+  pyramid.material = pyramidMaterial;
+
+  const sphere = CreateSphere("sphere", { diameter: 40 }, scene);
   const sphereMaterial = new StandardMaterial("sphere-material", scene);
   sphereMaterial.diffuseColor = new Color3(0, 0, 1);
   sphere.material = sphereMaterial;
-  sphere.position = new Vector3(50, 0, 0);
-
-  const box = CreateBox("box", { size: 10 }, scene);
-  const material = new StandardMaterial("box-material", scene);
-  material.diffuseColor = new Color3(1, 0, 0);
-  box.material = material;
-  box.position = new Vector3(0, 30, 0);
-  box.rotation = new Vector3(Math.PI / 4, Math.PI / 4, 0);
-
-  // animate the sphere
-  let i = 0;
-  scene.onBeforeRenderObservable.add(() => {
-    sphere.position.x = Math.sin(i) * 50;
-    sphere.position.z = Math.cos(i) * 50;
-    i += 0.1 * scene.getAnimationRatio();
-
-    overlay.requestRedraw(); // or use animationMode: "always" when in overlay options
-  });
+  sphere.position = new Vector3(0, 0, 0);
 }
 
 start();

@@ -1,7 +1,6 @@
 import mapboxgl, {
   MercatorCoordinate,
   type CustomLayerInterface,
-  // type LngLatLike,
   type Map,
 } from "mapbox-gl";
 
@@ -11,6 +10,7 @@ import { FreeCamera, type Camera } from "@babylonjs/core/Cameras";
 import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { Matrix, Quaternion, Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { latLngToVector3Relative, type LatLngAltLike } from "./util";
 
 const DEFAULT_UP = new Vector3(0, 1, 0);
 const CAMERA_NAME = "mapbox-camera";
@@ -21,7 +21,7 @@ export interface LngLatLike {
 }
 
 // configuration of the custom layer for a 3D model per the CustomLayerInterface
-interface IMapBoxWebGLCustomLayer {
+interface IMapboxWebGLCustomLayer {
   map: Map;
 
   /**
@@ -70,7 +70,7 @@ interface IMapBoxWebGLCustomLayer {
   antialias?: boolean;
 }
 
-export class MapBoxWebGLCustomLayer {
+export class MapboxWebGLCustomLayer {
   protected readonly rotationArray: Float32Array = new Float32Array(3);
   public readonly rotationInverse: Quaternion = new Quaternion();
 
@@ -79,6 +79,7 @@ export class MapBoxWebGLCustomLayer {
   private _camera!: Camera;
 
   private _map!: Map;
+  protected anchor!: LatLngAltLike;
 
   private _scale: number;
   private _anchorMercatorCoordinate: MercatorCoordinate;
@@ -104,7 +105,7 @@ export class MapBoxWebGLCustomLayer {
     return this._camera;
   }
 
-  constructor(protected readonly options: IMapBoxWebGLCustomLayer) {
+  constructor(protected readonly options: IMapboxWebGLCustomLayer) {
     const {
       anchor = { lat: 0, lng: 0, altitude: 0 },
       upAxis = "Y",
@@ -132,20 +133,6 @@ export class MapBoxWebGLCustomLayer {
 
     this._scale =
       this._anchorMercatorCoordinate.meterInMercatorCoordinateUnits();
-
-    // // transformation parameters to position, rotate and scale the 3D model onto the map
-    // const modelTransform = {
-    //   translateX: anchorMercatorCoordinate.x,
-    //   translateY: anchorMercatorCoordinate.y,
-    //   translateZ: anchorMercatorCoordinate.z,
-    //   rotateX: modelRotate[0],
-    //   rotateY: modelRotate[1],
-    //   rotateZ: modelRotate[2],
-    //   /* Since the 3D model is in real world meters, a scale transform needs to be
-    //    * applied since the CustomLayerInterface expects units in MercatorCoordinates.
-    //    */
-    //   scale: anchorMercatorCoordinate.meterInMercatorCoordinateUnits(),
-    // };
   }
 
   public async waitForSceneInit(): Promise<void> {
@@ -166,6 +153,14 @@ export class MapBoxWebGLCustomLayer {
    */
   public requestRedraw(): void {
     this._map.triggerRepaint();
+  }
+
+  /**
+   * Sets the anchor-point.
+   * @param anchor
+   */
+  public setAnchor(anchor: LatLngAltLike) {
+    this.anchor = anchor;
   }
 
   /**
@@ -193,10 +188,27 @@ export class MapBoxWebGLCustomLayer {
 
     // copy to rotationArray for transformer.fromLatLngAltitude()
     const euler = q.toEulerAngles();
-    debugger;
     this.rotationArray[0] = euler.x;
     this.rotationArray[1] = euler.y;
     this.rotationArray[2] = euler.z;
+  }
+
+  /**
+   * Convert coordinates from WGS84 Latitude Longitude to world-space
+   * coordinates while taking the origin and orientation into account.
+   * @param position the position to convert
+   * @param target the target vector to write the result to
+   * @returns the target vector
+   */
+  public latLngAltitudeToVector3Ref(
+    position: LatLngAltLike,
+    target = new Vector3()
+  ) {
+    latLngToVector3Relative(position, this.anchor, target);
+
+    target.applyRotationQuaternion(this.rotationInverse);
+
+    return target;
   }
 
   private _createCamera() {
