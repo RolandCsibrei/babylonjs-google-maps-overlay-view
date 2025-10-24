@@ -31,7 +31,7 @@ npm i mapbox-gl
 2. Install dependencies: `npm install`
 3. Run the examples page `npm run dev`
 
-## GMAPS API KEY
+## API KEYS
 
 Create an `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps-key` and/or `VITE_MAPBOX_TOKEN=mapbox-token`.
 
