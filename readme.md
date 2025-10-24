@@ -35,7 +35,7 @@ npm i mapbox-gl
 
 Create an `.env` file in the root of the project and add `VITE_GMAPS_KEY=your-gmaps-key` and/or `VITE_MAPBOX_TOKEN=mapbox-token`.
 
-See the example code: [src/main.ts](src/examples)
+See the example code: [src/examples](src/examples)
 
 ### Issues
 
