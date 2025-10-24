@@ -53,7 +53,7 @@ Apache License 2.0.
 
 - [babylon.js](https://www.babylonjs.com/)
 - [Google Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/overview)
-- Inspired by Google examples
+- Inspired by Google and Mapbox examples
 
 ## Thanks to
 
